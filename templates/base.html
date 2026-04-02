@@ -1,0 +1,53 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{{ event_title }}</title>
+    <meta name="description" content="From Zero to Momentum webinar: personal development and entrepreneurship the African way." />
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}?v=20260402" />
+</head>
+<body>
+    <header class="site-header">
+        <a class="brand" href="{% url 'home' %}">From Zero to Momentum</a>
+        <nav>
+            <a href="{% url 'home' %}">Home</a>
+            <a href="{% url 'speakers' %}">Speakers</a>
+            <a href="{% url 'programme' %}">Programme</a>
+            <a href="{% url 'pricing' %}">Pricing</a>
+            <a href="{% url 'register' %}" class="btn btn-small">Register</a>
+        </nav>
+    </header>
+
+    {% if messages %}
+    <section class="flash-wrap">
+        {% for message in messages %}
+        <div class="flash {{ message.tags }}">{{ message }}</div>
+        {% endfor %}
+    </section>
+    {% endif %}
+
+    <main>
+        {% block content %}{% endblock %}
+    </main>
+
+    <footer class="site-footer">
+        <div>
+            <h4>Partners</h4>
+            <p>{{ event_hosts }}</p>
+        </div>
+        <div>
+            <h4>Event Time</h4>
+            <p>{{ event_datetime }}</p>
+        </div>
+        <div class="socials">
+            <a href="#">Instagram</a>
+            <a href="#">LinkedIn</a>
+            <a href="#">X</a>
+        </div>
+    </footer>
+
+    <script src="{% static 'js/main.js' %}"></script>
+</body>
+</html>

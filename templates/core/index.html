@@ -1,0 +1,74 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<section class="hero">
+    <div class="hero-content container">
+        <p class="kicker">Quantilytix x Impactpreneur Global</p>
+        <h1>{{ event_title }}</h1>
+        <p class="hook">Entrepreneurship without personal development is a fast car with no steering. Personal development without entrepreneurship is a trained pilot with no plane. Tonight we give you both.</p>
+        <p class="date">{{ event_datetime }}</p>
+        <div class="countdown" data-event-start="{{ event_start_iso }}">
+            <div><span id="cd-days">00</span><small>Days</small></div>
+            <div><span id="cd-hours">00</span><small>Hours</small></div>
+            <div><span id="cd-minutes">00</span><small>Minutes</small></div>
+            <div><span id="cd-seconds">00</span><small>Seconds</small></div>
+        </div>
+        <div class="hero-actions">
+            <a class="btn pulse" href="{% url 'register' %}">Register Now</a>
+            <a class="btn btn-ghost" href="{% url 'programme' %}">See Programme</a>
+        </div>
+    </div>
+</section>
+
+<section class="container visual-story">
+    <article class="visual-card image">
+        <img src="{% static 'images/event-speaker.jpeg' %}" alt="Webinar audience and entrepreneurship session" />
+    </article>
+    <article class="visual-card image">
+        <img src="{% static 'images/event-hero.jpeg' %}" alt="Conference and entrepreneurship gathering" />
+    </article>
+</section>
+
+<section class="container visual-story-copy">
+    <article class="visual-card text">
+        <h2>Built For African Builders</h2>
+        <p>This webinar combines personal growth systems with practical entrepreneurship strategy, tailored for founders, creators, and professionals who want clear momentum.</p>
+        <ul>
+            <li>Actionable frameworks, not just inspiration</li>
+            <li>Execution guidance from experienced speakers</li>
+            <li>A direct path from webinar to real opportunities</li>
+        </ul>
+        <a class="btn" href="{% url 'pricing' %}">View Ticket Tiers</a>
+    </article>
+</section>
+
+<section class="container credibility">
+    <article>
+        <h3>Why this webinar matters</h3>
+        <p>Designed for African builders, creators, and professionals ready to convert potential into momentum with practical systems.</p>
+    </article>
+    <article>
+        <h3>Speaker authority</h3>
+        <p>{{ speaker_count }} featured speakers with practical execution-focused insights and real entrepreneurial lessons.</p>
+    </article>
+    <article>
+        <h3>Conversion-focused experience</h3>
+        <p>Join free resources, strategic offers, and pathways into app, community, and consulting support.</p>
+    </article>
+</section>
+
+<section class="container sponsors-section">
+    <h2>Sponsors and Partners</h2>
+    <div class="logo-grid">
+        {% for sponsor in sponsors %}
+        <a href="{{ sponsor.website|default:'#' }}" class="logo-card" target="_blank" rel="noreferrer">
+            <img src="{{ sponsor.logo_url }}" alt="{{ sponsor.name }} logo" />
+            <span>{{ sponsor.name }}</span>
+        </a>
+        {% empty %}
+        <p>Add sponsors from admin to display logo visibility here.</p>
+        {% endfor %}
+    </div>
+</section>
+{% endblock %}

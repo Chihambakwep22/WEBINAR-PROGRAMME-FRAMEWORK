@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+{% load core_extras %}
+
+{% block content %}
+<section class="container page-head">
+    <h1>Pricing</h1>
+    <p>Choose your tier and register in minutes.</p>
+</section>
+
+<section class="container pricing-grid">
+    {% for tier in tiers %}
+    <article class="pricing-card {% if tier.is_highlighted %}featured{% endif %}">
+        <h3>{{ tier.name }}</h3>
+        <p class="price">${{ tier.price }}</p>
+        <p>{{ tier.description }}</p>
+        <ul>
+            {% for feature in tier.features|split_lines %}
+            <li>{{ feature }}</li>
+            {% endfor %}
+        </ul>
+        <a class="btn" href="{% url 'register' %}">Choose {{ tier.name }}</a>
+    </article>
+    {% endfor %}
+</section>
+{% endblock %}

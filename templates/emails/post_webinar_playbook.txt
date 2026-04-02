@@ -1,0 +1,7 @@
+Hi {{ registration.full_name }},
+
+Thanks for attending.
+Here is your Free Playbook link:
+https://example.com/playbook
+
+Use it to implement your next 30-day growth sprint.

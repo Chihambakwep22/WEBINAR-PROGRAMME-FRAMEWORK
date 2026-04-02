@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<section class="container page-head">
+    <h1>Registration Confirmed</h1>
+    <p>Thank you, {{ registration.full_name }}. Your confirmation email has been sent to {{ registration.email }}.</p>
+    <p>Ticket: {{ registration.ticket_tier.name }} | Final Price: ${{ registration.final_price }}</p>
+    <div class="hero-actions">
+        <a class="btn" href="{% url 'programme' %}">View Programme</a>
+        <a class="btn btn-ghost" href="{% url 'offers' %}?registration={{ registration.id }}">Explore Post-Webinar Offers</a>
+    </div>
+</section>
+{% endblock %}

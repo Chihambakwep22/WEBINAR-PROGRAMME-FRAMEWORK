@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+{% load core_extras %}
+
+{% block content %}
+<section class="container page-head">
+    <h1>Speakers</h1>
+    <p>Authority, results, and tactical lessons for African entrepreneurship.</p>
+</section>
+
+<section class="container cards-grid speaker-grid">
+    {% for speaker in speakers %}
+    <article class="speaker-card">
+        {% with speaker_images|get_item:speaker.name as speaker_image %}
+        {% if speaker_image %}
+        <div class="speaker-photo-frame">
+            <img class="speaker-photo" src="{{ speaker_image }}" alt="{{ speaker.name }}" />
+        </div>
+        {% endif %}
+        {% endwith %}
+        <h3>{{ speaker.name }}</h3>
+        <p class="muted">{{ speaker.role }}</p>
+        <p>{{ speaker.bio }}</p>
+        <h4>{{ speaker.talk_title }}</h4>
+        <ul>
+            {% for insight in speaker.key_insights|split_lines %}
+            <li>{{ insight }}</li>
+            {% endfor %}
+        </ul>
+        {% if speaker.extra_details %}
+        <details>
+            <summary>More about this talk</summary>
+            <p>{{ speaker.extra_details }}</p>
+        </details>
+        {% endif %}
+        <a class="btn btn-small" href="{% url 'register' %}">Reserve Your Seat</a>
+    </article>
+    {% empty %}
+    <p>No speakers configured yet. Add them from admin.</p>
+    {% endfor %}
+</section>
+{% endblock %}

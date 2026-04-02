@@ -1,0 +1,66 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<section class="container page-head">
+    <h1>Registrations Dashboard</h1>
+    <p>Filter, review, and export attendee records.</p>
+</section>
+
+<section class="container dashboard-metrics">
+    <article><h3>Total</h3><p>{{ total_registrations }}</p></article>
+    {% for row in tier_counts %}
+    <article><h3>{{ row.ticket_tier__name }}</h3><p>{{ row.total }}</p></article>
+    {% endfor %}
+</section>
+
+<section class="container form-wrap">
+    <form method="get" class="filter-form">
+        <label>Tier
+            <select name="tier">
+                <option value="">All</option>
+                {% for tier in ticket_tiers %}
+                <option value="{{ tier.id }}" {% if selected_tier == tier.id|stringformat:'s' %}selected{% endif %}>{{ tier.name }}</option>
+                {% endfor %}
+            </select>
+        </label>
+        <label>Email
+            <input type="text" name="email" value="{{ email_query }}" placeholder="search email" />
+        </label>
+        <button class="btn" type="submit">Apply</button>
+        <button class="btn btn-ghost" type="submit" name="export" value="csv">Export CSV</button>
+    </form>
+</section>
+
+<section class="container table-wrap">
+    <table>
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Phone</th>
+                <th>Tier</th>
+                <th>Price</th>
+                <th>Paid</th>
+                <th>Attended</th>
+                <th>Date</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for reg in page.object_list %}
+            <tr>
+                <td>{{ reg.full_name }}</td>
+                <td>{{ reg.email }}</td>
+                <td>{{ reg.phone_number }}</td>
+                <td>{{ reg.ticket_tier.name }}</td>
+                <td>${{ reg.final_price }}</td>
+                <td>{{ reg.payment_confirmed }}</td>
+                <td>{{ reg.attended }}</td>
+                <td>{{ reg.created_at|date:'Y-m-d H:i' }}</td>
+            </tr>
+            {% empty %}
+            <tr><td colspan="8">No registrations found.</td></tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</section>
+{% endblock %}

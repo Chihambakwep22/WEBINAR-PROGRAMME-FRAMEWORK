@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<section class="container page-head">
+    <h1>Post-Webinar Offers</h1>
+    <p>Continue your momentum with practical tools and growth pathways.</p>
+</section>
+
+<section class="container form-wrap">
+    <form method="post" action="{% url 'capture_playbook_lead' %}" class="playbook-form">
+        {% csrf_token %}
+        <h3>Get Free Playbook</h3>
+        {{ playbook_form.email }}
+        <button class="btn" type="submit">Send Me the Playbook</button>
+    </form>
+</section>
+
+<section class="container cards-grid">
+    {% for offer in offers %}
+    <article class="offer-card">
+        <h3>{{ offer.title }}</h3>
+        <p>{{ offer.description }}</p>
+        <a
+            class="btn"
+            href="{{ offer.cta_url }}"
+            target="_blank"
+            rel="noreferrer"
+            data-track="offer_click"
+            data-url="{{ offer.cta_url }}"
+            data-registration="{% if registration %}{{ registration.id }}{% endif %}"
+        >{{ offer.cta_text }}</a>
+    </article>
+    {% empty %}
+    <p>No offers configured yet.</p>
+    {% endfor %}
+</section>
+{% endblock %}

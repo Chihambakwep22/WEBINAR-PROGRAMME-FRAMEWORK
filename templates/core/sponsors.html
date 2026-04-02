@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<section class="container page-head">
+    <h1>Sponsors and Partners</h1>
+    <p>Organizations supporting From Zero to Momentum.</p>
+</section>
+
+<section class="container logo-grid">
+    {% for sponsor in sponsors %}
+    <a href="{{ sponsor.website|default:'#' }}" class="logo-card" target="_blank" rel="noreferrer">
+        <img src="{{ sponsor.logo_url }}" alt="{{ sponsor.name }} logo" />
+        <h4>{{ sponsor.name }}</h4>
+        <p>{{ sponsor.description }}</p>
+    </a>
+    {% empty %}
+    <p>Add sponsors from admin to display them here.</p>
+    {% endfor %}
+</section>
+{% endblock %}

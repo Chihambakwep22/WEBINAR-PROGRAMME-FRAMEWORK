@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<section class="container page-head">
+    <h1>Register</h1>
+    <p>Secure your webinar ticket and get instant email confirmation.</p>
+</section>
+
+<section class="container form-wrap">
+    <form method="post" class="reg-form">
+        {% csrf_token %}
+        {% if form.non_field_errors %}
+            <div class="errors">{{ form.non_field_errors }}</div>
+        {% endif %}
+
+        <label>Full Name {{ form.full_name }}</label>
+        <label>Email Address {{ form.email }}</label>
+        <label>Phone Number {{ form.phone_number }}</label>
+        <label>Ticket Tier {{ form.ticket_tier }}</label>
+        <label>Discount Code (Optional) {{ form.discount_code_text }}</label>
+
+        {% for field in form %}
+            {% if field.errors %}<p class="errors">{{ field.label }}: {{ field.errors|striptags }}</p>{% endif %}
+        {% endfor %}
+
+        <button type="submit" class="btn pulse">Complete Registration</button>
+    </form>
+
+    <aside class="pricing-note">
+        <h3>Ticket Tiers</h3>
+        <ul>
+            {% for tier in tiers %}
+            <li>{{ tier.name }} - ${{ tier.price }}</li>
+            {% endfor %}
+        </ul>
+        <p class="urgency">Early Bird spots are limited. Register now.</p>
+    </aside>
+</section>
+{% endblock %}

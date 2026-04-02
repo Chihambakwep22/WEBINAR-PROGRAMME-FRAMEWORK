@@ -1,0 +1,9 @@
+Hi {{ registration.full_name }},
+
+Your next opportunities:
+- Quantilytix App: https://example.com/app
+- IG Community: https://example.com/community
+- Next Bootcamp: https://example.com/bootcamp
+- 1:1 Consulting: https://example.com/consulting
+
+Choose one and keep the momentum going.

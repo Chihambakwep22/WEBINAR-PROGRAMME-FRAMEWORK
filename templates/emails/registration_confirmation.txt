@@ -1,0 +1,11 @@
+Hi {{ registration.full_name }},
+
+You are successfully registered for {{ event_name }}.
+Date: {{ event_date }}
+Time: {{ event_time }}
+Ticket Tier: {{ registration.ticket_tier.name }}
+Final Price: ${{ registration.final_price }}
+
+Keep this email for your records.
+
+Team Quantilytix x Impactpreneur Global

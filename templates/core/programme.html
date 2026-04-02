@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<section class="container page-head">
+    <h1>Programme</h1>
+    <p>Clear timeline so attendees know what happens and when.</p>
+</section>
+
+<section class="container timeline">
+    {% for item in sessions %}
+    <article class="timeline-item" style="--session-color: {{ item.color_hex }}">
+        <div class="dot"></div>
+        <div class="content">
+            <p class="time">{{ item.start_time|date:'H:i' }} - {{ item.end_time|date:'H:i' }}</p>
+            <h3>{{ item.title }}</h3>
+            <p>{{ item.description }}</p>
+            {% if item.speaker %}<p class="muted">Speaker: {{ item.speaker.name }}</p>{% endif %}
+        </div>
+    </article>
+    {% empty %}
+    <p>Schedule is being finalized. Add sessions from admin.</p>
+    {% endfor %}
+</section>
+{% endblock %}
