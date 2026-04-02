@@ -1,75 +1,101 @@
-# From Zero to Momentum Webinar Website
+# Webinar Programme Framework
 
-Django-powered website with HTML frontend and full backend workflows for event conversion.
+A Django-powered webinar marketing and registration platform for "From Zero to Momentum".
 
-## Implemented Features
+## Features
 
-- Home landing page with hero hook, event identity, CTA, countdown, and sponsors section
-- Speakers page with bios, topics, key insights, and expandable details
-- Programme page with timeline schedule
-- Pricing page with highlighted tier cards
-- Registration form with:
+- Landing page with hero, countdown, sponsors, and conversion CTA
+- Speakers page with bios, key insights, and talk details
+- Programme timeline page with session schedule
+- Pricing tiers with highlighted recommendations
+- Registration flow with:
   - duplicate email prevention
-  - ticket tier selection
-  - discount code support
+  - discount code validation
   - final price computation
-- Post-webinar offers page with optional VIP-only offers
-- Playbook lead capture form
-- Click tracking endpoint for CTA analytics
-- Admin backend:
-  - registration table
-  - list filters (ticket tier, date, payment, attendance)
-  - search by name/email/phone
-  - Excel export action
-- Staff dashboard view with filtering and CSV export
+- Registration success page with next-step links
+- Post-webinar offers page with VIP-only filtering
+- Playbook email lead capture form
+- CTA click tracking endpoint for offer analytics
+- Staff dashboard with filters and CSV export
+- Django admin with Excel export for registrations
 - Email automation:
-  - immediate registration confirmation
-  - post-webinar sequence command for attended users
+  - registration confirmation
+  - post-webinar follow-up sequence for attendees
+
+## Tech Stack
+
+- Python
+- Django 6
+- SQLite (default for development)
+- openpyxl (Excel export)
 
 ## Project Structure
 
-- `config/`: Django project config
-- `core/`: main app models, views, forms, admin, services
-- `templates/`: HTML templates
-- `static/`: CSS and JS
+- config/: Django project settings and URL configuration
+- core/: app models, forms, views, admin, services, commands
+- templates/: HTML templates
+- static/: CSS, JavaScript, and image assets
 
-## Run Locally
+## Quick Start
 
-1. Activate environment (already created):
-   - `.venv/bin/activate`
-2. Install deps:
-   - `pip install -r requirements.txt`
-3. Apply migrations:
-   - `./.venv/bin/python manage.py migrate`
-4. Seed starter content:
-   - `./.venv/bin/python manage.py seed_webinar_data`
-5. Create admin user:
-   - `./.venv/bin/python manage.py createsuperuser`
-6. Start server:
-   - `./.venv/bin/python manage.py runserver`
+1. Create and activate virtual environment
+2. Install dependencies
+3. Run migrations
+4. Seed sample webinar data
+5. Create admin user
+6. Start server
 
-## Email Settings
+```bash
+python -m venv .venv
+source .venv/bin/activate
+pip install -r requirements.txt
+python manage.py migrate
+python manage.py seed_webinar_data
+python manage.py createsuperuser
+python manage.py runserver
+```
 
-Current setup uses Django console email backend for development.
-To use SMTP, update in `config/settings.py`:
+Open: http://127.0.0.1:8000/
 
-- `EMAIL_BACKEND`
-- `EMAIL_HOST`
-- `EMAIL_PORT`
-- `EMAIL_HOST_USER`
-- `EMAIL_HOST_PASSWORD`
-- `EMAIL_USE_TLS`
+## Management Commands
 
-## Post-Webinar Email Sequence
+Seed starter data:
 
-Send to attendees marked as `attended=True`:
+```bash
+python manage.py seed_webinar_data
+```
 
-- Dry run: `./.venv/bin/python manage.py send_post_webinar_emails --dry-run`
-- Actual send: `./.venv/bin/python manage.py send_post_webinar_emails`
+Send post-webinar sequence:
 
-## Integrations You Can Add Next
+```bash
+python manage.py send_post_webinar_emails --dry-run
+python manage.py send_post_webinar_emails
+```
 
-- Stripe/PayPal payment checkout and webhook-based payment confirmation
-- Zoom auto-join links per registration
-- Google Analytics / Meta Pixel scripts in base template
-- SMS reminders for registered attendees
+## Email Configuration
+
+Default development backend prints emails to console.
+
+To use SMTP, configure in config/settings.py:
+
+- EMAIL_BACKEND
+- EMAIL_HOST
+- EMAIL_PORT
+- EMAIL_HOST_USER
+- EMAIL_HOST_PASSWORD
+- EMAIL_USE_TLS
+- DEFAULT_FROM_EMAIL
+
+## Deployment Notes
+
+Before production:
+
+- set DEBUG = False
+- set ALLOWED_HOSTS
+- use PostgreSQL instead of SQLite
+- set secure SECRET_KEY from environment variable
+- configure static/media file serving
+
+## License
+
+For learning and project use.
