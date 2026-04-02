@@ -19,5 +19,8 @@ if [ "$COUNT" -gt "$ATTEMPTS" ]; then
   exit 1
 fi
 
+echo "Seeding webinar content..."
+python manage.py seed_webinar_data
+
 echo "Starting gunicorn..."
 exec gunicorn config.wsgi:application --bind 0.0.0.0:10000 --workers "${WEB_CONCURRENCY:-1}"

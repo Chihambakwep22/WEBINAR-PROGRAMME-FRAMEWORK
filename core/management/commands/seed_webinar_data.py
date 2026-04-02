@@ -10,7 +10,7 @@ class Command(BaseCommand):
     help = 'Seed starter data for the webinar website.'
 
     def handle(self, *args, **options):
-        TicketTier.objects.get_or_create(
+        TicketTier.objects.update_or_create(
             code='early-bird',
             defaults={
                 'name': 'Early Bird',
@@ -21,7 +21,7 @@ class Command(BaseCommand):
                 'active': True,
             },
         )
-        TicketTier.objects.get_or_create(
+        TicketTier.objects.update_or_create(
             code='standard',
             defaults={
                 'name': 'Standard',
@@ -31,7 +31,7 @@ class Command(BaseCommand):
                 'active': True,
             },
         )
-        TicketTier.objects.get_or_create(
+        TicketTier.objects.update_or_create(
             code='vip',
             defaults={
                 'name': 'VIP',
@@ -42,7 +42,7 @@ class Command(BaseCommand):
             },
         )
 
-        speaker1, _ = Speaker.objects.get_or_create(
+        speaker1, _ = Speaker.objects.update_or_create(
             name='George Bassey',
             defaults={
                 'role': 'Founder, Impactpreneur Global',
@@ -54,7 +54,7 @@ class Command(BaseCommand):
                 'display_order': 1,
             },
         )
-        speaker2, _ = Speaker.objects.get_or_create(
+        speaker2, _ = Speaker.objects.update_or_create(
             name='Quantilytix Team',
             defaults={
                 'role': 'Product and Growth Specialists',
@@ -69,7 +69,7 @@ class Command(BaseCommand):
 
         dt = timezone.make_aware(datetime.fromisoformat('2026-04-22T19:00:00'))
 
-        ProgrammeSession.objects.get_or_create(
+        ProgrammeSession.objects.update_or_create(
             title='Welcome and Event Kickoff',
             defaults={
                 'description': 'Context, expectations, and momentum framework.',
@@ -80,7 +80,7 @@ class Command(BaseCommand):
                 'color_hex': '#d8a136',
             },
         )
-        ProgrammeSession.objects.get_or_create(
+        ProgrammeSession.objects.update_or_create(
             title=speaker1.talk_title,
             defaults={
                 'description': 'Deep dive into enterprise execution discipline.',
@@ -92,7 +92,7 @@ class Command(BaseCommand):
                 'color_hex': '#0b3d2e',
             },
         )
-        ProgrammeSession.objects.get_or_create(
+        ProgrammeSession.objects.update_or_create(
             title=speaker2.talk_title,
             defaults={
                 'description': 'Systems and habits for founder growth.',
@@ -104,7 +104,7 @@ class Command(BaseCommand):
                 'color_hex': '#c85a2e',
             },
         )
-        ProgrammeSession.objects.get_or_create(
+        ProgrammeSession.objects.update_or_create(
             title='Q&A and Closing',
             defaults={
                 'description': 'Audience questions and next-step actions.',
@@ -116,7 +116,7 @@ class Command(BaseCommand):
             },
         )
 
-        Sponsor.objects.get_or_create(
+        Sponsor.objects.update_or_create(
             name='Impactpreneur Global',
             defaults={
                 'logo_url': 'https://dummyimage.com/400x220/0b3d2e/ffffff&text=Impactpreneur+Global',
@@ -126,7 +126,7 @@ class Command(BaseCommand):
                 'display_order': 1,
             },
         )
-        Sponsor.objects.get_or_create(
+        Sponsor.objects.update_or_create(
             name='Quantilytix',
             defaults={
                 'logo_url': 'https://dummyimage.com/400x220/c85a2e/ffffff&text=Quantilytix',
@@ -137,7 +137,7 @@ class Command(BaseCommand):
             },
         )
 
-        Offer.objects.get_or_create(
+        Offer.objects.update_or_create(
             title='Free Momentum Playbook',
             defaults={
                 'description': 'Download the practical execution workbook used during the webinar.',
@@ -149,7 +149,7 @@ class Command(BaseCommand):
                 'display_order': 1,
             },
         )
-        Offer.objects.get_or_create(
+        Offer.objects.update_or_create(
             title='Quantilytix App',
             defaults={
                 'description': 'Move from planning to execution with guided daily focus systems.',
@@ -161,7 +161,7 @@ class Command(BaseCommand):
                 'display_order': 2,
             },
         )
-        Offer.objects.get_or_create(
+        Offer.objects.update_or_create(
             title='Premium 1:1 Consulting',
             defaults={
                 'description': 'Private strategy sessions to map your next growth leap.',
