@@ -23,4 +23,4 @@ echo "Seeding webinar content..."
 python manage.py seed_webinar_data
 
 echo "Starting gunicorn..."
-exec gunicorn config.wsgi:application --bind 0.0.0.0:10000 --workers "${WEB_CONCURRENCY:-1}"
+exec gunicorn config.wsgi:application --bind 0.0.0.0:"${PORT:-10000}" --workers "${WEB_CONCURRENCY:-1}"
