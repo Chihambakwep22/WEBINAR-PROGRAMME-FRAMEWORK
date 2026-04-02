@@ -1,0 +1,31 @@
+services:
+  - type: web
+    name: webinar-framework
+    env: python
+    plan: free
+    buildCommand: |
+      pip install -r requirements.txt
+      python manage.py collectstatic --noinput || true
+      python manage.py migrate
+    startCommand: gunicorn config.wsgi:application
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.11
+      - key: DEBUG
+        value: false
+      - key: ALLOWED_HOSTS
+        value: webinar-framework.onrender.com
+      - key: SECRET_KEY
+        generateValue: true
+      - key: DATABASE_URL
+        fromDatabase:
+          name: webinar_db
+          property: connectionString
+      - key: DISABLE_COLLECTSTATIC
+        value: "1"
+
+databases:
+  - name: webinar_db
+    engine: postgresql
+    plan: free
+    ipAllowList: []
