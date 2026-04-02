@@ -505,3 +505,213 @@ th {
         height: 260px;
     }
 }
+
+/* Mobile UX improvements */
+body {
+    overflow-x: hidden;
+}
+
+main {
+    overflow-x: hidden;
+}
+
+.site-header nav a {
+    white-space: nowrap;
+}
+
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+@media (max-width: 880px) {
+    .site-header {
+        padding: 12px 4%;
+    }
+
+    .site-header nav {
+        width: 100%;
+        overflow-x: auto;
+        flex-wrap: nowrap;
+        padding-bottom: 2px;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    .hero {
+        min-height: auto;
+    }
+
+    .hero-content {
+        padding: 40px 0 52px;
+    }
+
+    .countdown {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 10px;
+    }
+
+    .countdown div {
+        min-width: 0;
+    }
+
+    .cards-grid,
+    .pricing-grid,
+    .logo-grid {
+        grid-template-columns: 1fr;
+        gap: 12px;
+    }
+}
+
+@media (max-width: 700px) {
+    .container,
+    .flash-wrap {
+        width: min(1120px, 95%);
+    }
+
+    .brand {
+        font-size: 0.98rem;
+    }
+
+    .page-head {
+        padding: 24px 0 8px;
+    }
+
+    .hero h1 {
+        font-size: clamp(1.65rem, 8vw, 2.3rem);
+    }
+
+    .kicker {
+        font-size: 0.74rem;
+        letter-spacing: 0.6px;
+        padding: 6px 10px;
+    }
+
+    .hook {
+        font-size: 0.98rem;
+    }
+
+    .date {
+        font-size: 0.92rem;
+    }
+
+    .hero-actions {
+        display: grid;
+        grid-template-columns: 1fr;
+        width: 100%;
+    }
+
+    .hero-actions .btn,
+    .form-wrap .btn,
+    .reg-form .btn,
+    .playbook-form .btn,
+    .filter-form .btn {
+        width: 100%;
+    }
+
+    .btn,
+    input,
+    select,
+    textarea {
+        font-size: 16px;
+    }
+
+    .timeline {
+        border-left-width: 2px;
+        padding-left: 4px;
+    }
+
+    .timeline-item {
+        padding-left: 14px;
+    }
+
+    .timeline-item .dot {
+        width: 12px;
+        height: 12px;
+        left: -8px;
+    }
+
+    .pricing-card.featured::before {
+        top: 8px;
+        right: 8px;
+    }
+
+    .table-wrap {
+        overflow: visible;
+    }
+
+    table,
+    thead,
+    tbody,
+    tr,
+    th,
+    td {
+        display: block;
+        width: 100%;
+    }
+
+    thead {
+        display: none;
+    }
+
+    tbody tr {
+        border: 1px solid var(--stone-300);
+        border-radius: 12px;
+        background: var(--white);
+        box-shadow: var(--shadow);
+        margin-bottom: 12px;
+        padding: 6px 0;
+    }
+
+    td {
+        border-bottom: 1px solid var(--stone-100);
+        display: grid;
+        grid-template-columns: 108px 1fr;
+        gap: 8px;
+        padding: 10px 12px;
+        word-break: break-word;
+    }
+
+    td:last-child {
+        border-bottom: 0;
+    }
+
+    td::before {
+        content: attr(data-label);
+        font-weight: 700;
+        color: var(--green-900);
+    }
+}
+
+@media (max-width: 420px) {
+    .site-header nav a {
+        padding: 8px 9px;
+        font-size: 0.9rem;
+    }
+
+    .countdown span {
+        font-size: 1.3rem;
+    }
+
+    .countdown small {
+        font-size: 0.72rem;
+    }
+
+    .visual-card,
+    .speaker-card,
+    .pricing-card,
+    .offer-card,
+    .logo-card,
+    .reg-form,
+    .playbook-form,
+    .pricing-note,
+    .filter-form {
+        padding: 14px;
+    }
+
+    td {
+        grid-template-columns: 92px 1fr;
+        font-size: 0.95rem;
+    }
+}
