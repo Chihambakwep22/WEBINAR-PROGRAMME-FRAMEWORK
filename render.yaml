@@ -20,5 +20,4 @@ services:
 
 databases:
   - name: webinar_db
-    engine: postgresql
     plan: free
