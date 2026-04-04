@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-{% load core_extras %}
+{% load core_extras static %}
 
 {% block content %}
 <section class="container page-head">
@@ -17,6 +17,14 @@
         {% elif speaker.photo_url %}
         <div class="speaker-photo-frame">
             <img class="speaker-photo" src="{{ speaker.photo_url }}" alt="{{ speaker.name }}" />
+        </div>
+        {% elif speaker.name == 'George Bassey' %}
+        <div class="speaker-photo-frame">
+            <img class="speaker-photo" src="{% static 'speakers/GeorgeBassey.png' %}" alt="{{ speaker.name }}" />
+        </div>
+        {% elif speaker.name == 'Dr Helper Zhou' %}
+        <div class="speaker-photo-frame">
+            <img class="speaker-photo" src="{% static 'speakers/HelperZhou.png' %}" alt="{{ speaker.name }}" />
         </div>
         {% endif %}
         <h3>{{ speaker.name }}</h3>
