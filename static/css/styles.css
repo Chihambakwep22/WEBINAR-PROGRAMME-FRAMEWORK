@@ -587,6 +587,84 @@ th {
     text-decoration: underline;
 }
 
+.water-layer {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 0;
+}
+
+.drop {
+    position: absolute;
+    border-radius: 56% 44% 60% 40% / 42% 36% 64% 58%;
+    background:
+        radial-gradient(circle at 33% 26%, rgba(255, 255, 255, 0.84), rgba(255, 255, 255, 0) 34%),
+        linear-gradient(150deg, rgba(79, 125, 255, 0.42), rgba(134, 51, 181, 0.34), rgba(211, 59, 80, 0.3));
+    box-shadow: 0 12px 24px rgba(72, 18, 77, 0.18);
+    opacity: 0.66;
+    animation: driftDrop 9s ease-in-out infinite;
+}
+
+.drop.d1 { width: 180px; height: 230px; top: 12%; right: -44px; animation-delay: 0s; }
+.drop.d2 { width: 130px; height: 168px; top: 24%; left: -28px; animation-delay: 1.2s; }
+.drop.d3 { width: 88px; height: 114px; top: 56%; right: 9%; animation-delay: 2.1s; }
+.drop.d4 { width: 72px; height: 94px; top: 72%; left: 8%; animation-delay: 1.7s; }
+.drop.d5 { width: 96px; height: 124px; top: 8%; left: 38%; animation-delay: 2.8s; }
+.drop.d6 { width: 76px; height: 100px; top: 40%; right: 32%; animation-delay: 3.6s; }
+.drop.d7 { width: 120px; height: 154px; bottom: 6%; right: -20px; animation-delay: 4.2s; }
+
+@keyframes driftDrop {
+    0%, 100% { transform: translateY(0) rotate(0deg) scale(1); }
+    35% { transform: translateY(-11px) rotate(4deg) scale(1.02); }
+    70% { transform: translateY(7px) rotate(-3deg) scale(0.98); }
+}
+
+.ticket-corner {
+    position: fixed;
+    right: 14px;
+    bottom: 16px;
+    z-index: 140;
+    display: flex;
+    align-items: flex-end;
+    gap: 8px;
+}
+
+.ticket-avatar {
+    width: 96px;
+    height: 96px;
+    object-fit: contain;
+    filter: drop-shadow(0 6px 16px rgba(37, 13, 44, 0.32));
+}
+
+.ticket-bar {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    max-width: 190px;
+    background: linear-gradient(135deg, #d33b50, #6b1f55, #355ec9);
+    color: #ffffff;
+    border-radius: 999px;
+    padding: 10px 16px;
+    border: 2px solid rgba(255, 255, 255, 0.85);
+    box-shadow: 0 12px 28px rgba(62, 16, 57, 0.33);
+    animation: pulseTicket 2.1s ease-in-out infinite;
+}
+
+.ticket-bar strong {
+    font-size: 0.88rem;
+    line-height: 1.1;
+}
+
+.ticket-bar span {
+    font-size: 0.72rem;
+    opacity: 0.95;
+}
+
+@keyframes pulseTicket {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-3px); }
+}
+
 @media (max-width: 880px) {
     .site-header {
         align-items: flex-start;
@@ -693,5 +771,30 @@ main {
     .hero::after {
         transform: scale(0.75);
         opacity: 0.58;
+    }
+}
+
+@media (max-width: 700px) {
+    .ticket-corner {
+        right: 8px;
+        bottom: 10px;
+    }
+
+    .ticket-avatar {
+        width: 70px;
+        height: 70px;
+    }
+
+    .ticket-bar {
+        max-width: 150px;
+        padding: 8px 12px;
+    }
+
+    .ticket-bar strong {
+        font-size: 0.74rem;
+    }
+
+    .ticket-bar span {
+        font-size: 0.63rem;
     }
 }

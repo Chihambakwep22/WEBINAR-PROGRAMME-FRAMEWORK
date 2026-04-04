@@ -6,9 +6,27 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>{{ event_title }}</title>
     <meta name="description" content="From Zero to Momentum webinar: personal development and entrepreneurship the African way." />
-    <link rel="stylesheet" href="{% static 'css/styles.css' %}?v=20260404" />
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}?v=20260405" />
 </head>
 <body>
+    <div class="water-layer" aria-hidden="true">
+        <span class="drop d1"></span>
+        <span class="drop d2"></span>
+        <span class="drop d3"></span>
+        <span class="drop d4"></span>
+        <span class="drop d5"></span>
+        <span class="drop d6"></span>
+        <span class="drop d7"></span>
+    </div>
+
+    <aside class="ticket-corner" aria-label="Few tickets left">
+        <img src="{% static 'images/dr.png' %}" alt="Ticket mascot" class="ticket-avatar" />
+        <div class="ticket-bar">
+            <strong>Few Tickets Left</strong>
+            <span>Register before seats run out</span>
+        </div>
+    </aside>
+
     <header class="site-header">
         <a class="brand" href="{% url 'home' %}">From Zero to Momentum</a>
         <nav>
