@@ -15,20 +15,47 @@ from .forms import PlaybookLeadForm, RegistrationForm
 from .models import ClickEvent, Offer, ProgrammeSession, Registration, Speaker, Sponsor, TicketTier
 from .services import send_registration_confirmation
 
+USD_TO_ZAR = 15
+SUPPORTED_CURRENCIES = {'USD', 'ZAR'}
 
-def global_context():
+
+def get_selected_currency(request):
+    currency = request.session.get('currency', 'USD')
+    if currency not in SUPPORTED_CURRENCIES:
+        return 'USD'
+    return currency
+
+
+def global_context(request):
+    selected_currency = get_selected_currency(request)
+    symbol = '$' if selected_currency == 'USD' else 'R'
     return {
         'event_title': 'From Zero to Momentum: Mastering Personal Development & Entrepreneurship the African Way',
         'event_hosts': 'Quantilytix x Impactpreneur Global',
         'event_datetime': 'April 22, 2026 | 7:00 PM GST / 8:00 PM WAT',
         'event_start_iso': settings.EVENT_START_ISO,
         'sponsors': Sponsor.objects.filter(active=True),
+        'selected_currency': selected_currency,
+        'currency_symbol': symbol,
+        'usd_to_zar': USD_TO_ZAR,
     }
+
+
+def set_currency(request):
+    source = request.GET if request.method == 'GET' else request.POST
+    currency = source.get('currency', 'USD').upper()
+    if currency in SUPPORTED_CURRENCIES:
+        request.session['currency'] = currency
+
+    next_url = source.get('next', '')
+    if next_url.startswith('/'):
+        return redirect(next_url)
+    return redirect(request.META.get('HTTP_REFERER', '/'))
 
 
 def home(request):
     context = {
-        **global_context(),
+        **global_context(request),
         'tiers': TicketTier.objects.filter(active=True),
         'speaker_count': Speaker.objects.count(),
     }
@@ -42,7 +69,7 @@ def speakers(request):
         'Quantilytix Team': static('speakers/HelperZhou.png'),
     }
     context = {
-        **global_context(),
+        **global_context(request),
         'speakers': Speaker.objects.all(),
         'speaker_images': speaker_images,
     }
@@ -50,17 +77,17 @@ def speakers(request):
 
 
 def programme(request):
-    context = {**global_context(), 'sessions': ProgrammeSession.objects.select_related('speaker')}
+    context = {**global_context(request), 'sessions': ProgrammeSession.objects.select_related('speaker')}
     return render(request, 'core/programme.html', context)
 
 
 def pricing(request):
-    context = {**global_context(), 'tiers': TicketTier.objects.filter(active=True)}
+    context = {**global_context(request), 'tiers': TicketTier.objects.filter(active=True)}
     return render(request, 'core/pricing.html', context)
 
 
 def sponsors(request):
-    context = {**global_context(), 'sponsors': Sponsor.objects.filter(active=True)}
+    context = {**global_context(request), 'sponsors': Sponsor.objects.filter(active=True)}
     return render(request, 'core/sponsors.html', context)
 
 
@@ -76,7 +103,7 @@ def register(request):
         form = RegistrationForm()
 
     context = {
-        **global_context(),
+        **global_context(request),
         'form': form,
         'tiers': TicketTier.objects.filter(active=True),
     }
@@ -88,7 +115,7 @@ def registration_success(request, registration_id):
     return render(
         request,
         'core/registration_success.html',
-        {**global_context(), 'registration': registration},
+        {**global_context(request), 'registration': registration},
     )
 
 
@@ -104,7 +131,7 @@ def offers(request):
 
     playbook_form = PlaybookLeadForm()
     context = {
-        **global_context(),
+        **global_context(request),
         'offers': queryset,
         'registration': registration,
         'playbook_form': playbook_form,
@@ -169,7 +196,7 @@ def registration_dashboard(request):
     tier_counts = Registration.objects.values('ticket_tier__name').annotate(total=Count('id'))
 
     context = {
-        **global_context(),
+        **global_context(request),
         'page': page,
         'ticket_tiers': TicketTier.objects.filter(active=True),
         'selected_tier': tier,

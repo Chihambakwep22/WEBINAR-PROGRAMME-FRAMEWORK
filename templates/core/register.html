@@ -1,9 +1,11 @@
 {% extends 'base.html' %}
+{% load core_extras %}
 
 {% block content %}
 <section class="container page-head">
     <h1>Register</h1>
     <p>Secure your webinar ticket and get instant email confirmation.</p>
+    <p class="muted">Prices below are displayed in {{ selected_currency }}.</p>
 </section>
 
 <section class="container form-wrap">
@@ -30,10 +32,11 @@
         <h3>Ticket Tiers</h3>
         <ul>
             {% for tier in tiers %}
-            <li>{{ tier.name }} - ${{ tier.price }}</li>
+            <li>{{ tier.name }} - {{ currency_symbol }}{{ tier.price|convert_currency:selected_currency|floatformat:2 }}</li>
             {% endfor %}
         </ul>
         <p class="urgency">Early Bird spots are limited. Register now.</p>
+        <p class="muted">Rate used: 1 USD = {{ usd_to_zar }} ZAR.</p>
     </aside>
 </section>
 {% endblock %}

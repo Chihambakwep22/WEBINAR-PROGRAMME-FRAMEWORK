@@ -5,13 +5,14 @@
 <section class="container page-head">
     <h1>Pricing</h1>
     <p>Choose your tier and register in minutes.</p>
+    <p class="muted">Showing prices in {{ selected_currency }}. Exchange rate: 1 USD = {{ usd_to_zar }} ZAR.</p>
 </section>
 
 <section class="container pricing-grid">
     {% for tier in tiers %}
     <article class="pricing-card {% if tier.is_highlighted %}featured{% endif %}">
         <h3>{{ tier.name }}</h3>
-        <p class="price">${{ tier.price }}</p>
+        <p class="price">{{ currency_symbol }}{{ tier.price|convert_currency:selected_currency|floatformat:2 }}</p>
         <p>{{ tier.description }}</p>
         <ul>
             {% for feature in tier.features|split_lines %}

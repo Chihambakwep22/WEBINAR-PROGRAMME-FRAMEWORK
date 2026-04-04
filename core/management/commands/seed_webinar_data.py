@@ -120,7 +120,7 @@ class Command(BaseCommand):
             name='Impactpreneur Global',
             defaults={
                 'logo_url': 'https://dummyimage.com/400x220/0b3d2e/ffffff&text=Impactpreneur+Global',
-                'website': 'https://example.com',
+                'website': 'https://qx.quantilytix.co.za/',
                 'description': 'Empowering African entrepreneurs to build sustainable ventures.',
                 'active': True,
                 'display_order': 1,
@@ -130,7 +130,7 @@ class Command(BaseCommand):
             name='Quantilytix',
             defaults={
                 'logo_url': 'https://dummyimage.com/400x220/c85a2e/ffffff&text=Quantilytix',
-                'website': 'https://example.com',
+                'website': 'https://qx.quantilytix.co.za/',
                 'description': 'Growth and productivity tools for founders and teams.',
                 'active': True,
                 'display_order': 2,

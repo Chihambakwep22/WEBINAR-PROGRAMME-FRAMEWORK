@@ -1,10 +1,11 @@
 {% extends 'base.html' %}
+{% load core_extras %}
 
 {% block content %}
 <section class="container page-head">
     <h1>Registration Confirmed</h1>
     <p>Thank you, {{ registration.full_name }}. Your confirmation email has been sent to {{ registration.email }}.</p>
-    <p>Ticket: {{ registration.ticket_tier.name }} | Final Price: ${{ registration.final_price }}</p>
+    <p>Ticket: {{ registration.ticket_tier.name }} | Final Price: {{ currency_symbol }}{{ registration.final_price|convert_currency:selected_currency|floatformat:2 }} ({{ selected_currency }})</p>
     <div class="hero-actions">
         <a class="btn" href="{% url 'programme' %}">View Programme</a>
         <a class="btn btn-ghost" href="{% url 'offers' %}?registration={{ registration.id }}">Explore Post-Webinar Offers</a>
