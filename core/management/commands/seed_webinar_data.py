@@ -62,42 +62,6 @@ class Command(BaseCommand):
                 'instructions': 'Pay via EcoCash and submit your reference after payment.',
                 'display_order': 1,
             },
-            {
-                'code': 'cards',
-                'name': 'Cards (Visa/Mastercard)',
-                'method_type': 'card',
-                'account_label': 'Gateway',
-                'account_value': '',
-                'instructions': 'Card checkout link will be provided after registration.',
-                'display_order': 2,
-            },
-            {
-                'code': 'paypal',
-                'name': 'PayPal',
-                'method_type': 'wallet',
-                'account_label': 'PayPal Email',
-                'account_value': '',
-                'instructions': 'Send payment to the PayPal account details once configured.',
-                'display_order': 3,
-            },
-            {
-                'code': 'mvissa',
-                'name': 'mVisa',
-                'method_type': 'mobile',
-                'account_label': 'Merchant ID',
-                'account_value': '',
-                'instructions': 'Scan mVisa or use merchant ID when available.',
-                'display_order': 4,
-            },
-            {
-                'code': 'onemoney',
-                'name': 'OneMoney',
-                'method_type': 'mobile',
-                'account_label': 'Wallet Number',
-                'account_value': '',
-                'instructions': 'Use OneMoney transfer and keep your payment reference.',
-                'display_order': 5,
-            },
         ]
 
         for method in payment_methods:
@@ -113,6 +77,8 @@ class Command(BaseCommand):
                     'display_order': method['display_order'],
                 },
             )
+
+        PaymentMethod.objects.filter(code__in=['cards', 'paypal', 'mvissa', 'onemoney']).update(active=False)
 
         # Rename old record if it already exists.
         Speaker.objects.filter(name='Quantilytix Team').update(
