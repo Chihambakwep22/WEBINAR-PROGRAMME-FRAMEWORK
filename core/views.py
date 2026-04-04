@@ -12,7 +12,7 @@ from django.utils import timezone
 from django.views.decorators.http import require_POST
 
 from .forms import PlaybookLeadForm, RegistrationForm
-from .models import ClickEvent, Offer, ProgrammeSession, Registration, Speaker, Sponsor, TicketTier
+from .models import ClickEvent, Offer, PaymentMethod, ProgrammeSession, Registration, Speaker, Sponsor, TicketTier
 from .services import send_registration_confirmation
 
 USD_TO_ZAR = 15
@@ -35,6 +35,7 @@ def global_context(request):
         'event_datetime': 'April 22, 2026 | 7:00 PM - 10:30 PM',
         'event_start_iso': settings.EVENT_START_ISO,
         'sponsors': Sponsor.objects.filter(active=True),
+        'payment_methods': PaymentMethod.objects.filter(active=True),
         'selected_currency': selected_currency,
         'currency_symbol': symbol,
         'usd_to_zar': USD_TO_ZAR,
@@ -84,7 +85,10 @@ def programme(request):
 
 
 def pricing(request):
-    context = {**global_context(request), 'tiers': TicketTier.objects.filter(active=True)}
+    context = {
+        **global_context(request),
+        'tiers': TicketTier.objects.filter(active=True),
+    }
     return render(request, 'core/pricing.html', context)
 
 
@@ -178,7 +182,7 @@ def track_click(request):
 
 @staff_member_required
 def registration_dashboard(request):
-    queryset = Registration.objects.select_related('ticket_tier').all()
+    queryset = Registration.objects.select_related('ticket_tier', 'payment_method').all()
 
     tier = request.GET.get('tier', '').strip()
     email = request.GET.get('email', '').strip()
@@ -190,11 +194,12 @@ def registration_dashboard(request):
     if request.GET.get('export') == 'csv':
         response = HttpResponse(content_type='text/csv')
         response['Content-Disposition'] = 'attachment; filename="registrations.csv"'
-        response.write('Name,Email,Phone,Tier,Final Price,Paid,Attended,Created At\n')
+        response.write('Name,Email,Phone,Tier,Payment Method,Final Price,Paid,Attended,Created At\n')
         for item in queryset:
             response.write(
                 f'"{item.full_name}","{item.email}","{item.phone_number}","{item.ticket_tier.name}",'
-                f'"{item.final_price}","{item.payment_confirmed}","{item.attended}","{timezone.localtime(item.created_at)}"\n'
+                f'"{item.payment_method.name if item.payment_method else ""}","{item.final_price}",'
+                f'"{item.payment_confirmed}","{item.attended}","{timezone.localtime(item.created_at)}"\n'
             )
         return response
 

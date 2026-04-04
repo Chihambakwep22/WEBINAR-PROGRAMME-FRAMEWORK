@@ -6,6 +6,7 @@
     <h1>Registration Confirmed</h1>
     <p>Thank you, {{ registration.full_name }}. Your confirmation email has been sent to {{ registration.email }}.</p>
     <p>Ticket: {{ registration.ticket_tier.name }} | Final Price: {{ currency_symbol }}{{ registration.final_price|convert_currency:selected_currency|floatformat:2 }} ({{ selected_currency }})</p>
+    <p>Payment Method: {{ registration.payment_method.name|default:'Not selected' }}</p>
 
     {% if registration.payment_confirmed %}
     <p><strong>Payment confirmed.</strong> Use this auto-generated message draft:</p>

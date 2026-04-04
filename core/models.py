@@ -34,6 +34,31 @@ class TicketTier(models.Model):
         return f'{self.name} (${self.price})'
 
 
+class PaymentMethod(models.Model):
+    METHOD_TYPES = [
+        ('mobile', 'Mobile Payment'),
+        ('card', 'Card Payment'),
+        ('wallet', 'Digital Wallet'),
+        ('bank', 'Bank Transfer'),
+        ('other', 'Other'),
+    ]
+
+    code = models.CharField(max_length=40, unique=True)
+    name = models.CharField(max_length=80)
+    method_type = models.CharField(max_length=20, choices=METHOD_TYPES, default='other')
+    account_label = models.CharField(max_length=80, blank=True, help_text='Label like wallet number, merchant ID, or email.')
+    account_value = models.CharField(max_length=120, blank=True, help_text='Fill this later with your real account details.')
+    instructions = models.TextField(blank=True, help_text='Optional payment instructions to show users.')
+    active = models.BooleanField(default=True)
+    display_order = models.PositiveIntegerField(default=0)
+
+    class Meta:
+        ordering = ['display_order', 'name']
+
+    def __str__(self) -> str:
+        return self.name
+
+
 class DiscountCode(models.Model):
     code = models.CharField(max_length=50, unique=True)
     percent_off = models.PositiveIntegerField(default=0)
@@ -55,6 +80,7 @@ class Registration(models.Model):
     email = models.EmailField(unique=True)
     phone_number = models.CharField(max_length=30)
     ticket_tier = models.ForeignKey(TicketTier, on_delete=models.PROTECT)
+    payment_method = models.ForeignKey(PaymentMethod, null=True, blank=True, on_delete=models.SET_NULL)
     discount_code = models.ForeignKey(
         DiscountCode,
         null=True,
@@ -78,8 +104,9 @@ class Registration(models.Model):
         if not self.payment_confirmed:
             return 'Payment not yet confirmed.'
 
+        method_name = self.payment_method.name if self.payment_method else 'Selected method'
         return (
-            f'Hi {self.full_name}, your payment for the From Zero to Momentum webinar has been confirmed. '
+            f'Hi {self.full_name}, your payment via {method_name} for the From Zero to Momentum webinar has been confirmed. '
             f'Your seat is secured for April 22, 2026 from 7:00 PM to 10:30 PM. '
             f'Ticket: {self.ticket_tier.name}. Reference: {self.payment_reference or "N/A"}. '
             'Please keep this message for your record.'

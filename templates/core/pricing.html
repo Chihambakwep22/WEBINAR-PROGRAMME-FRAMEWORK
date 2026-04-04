@@ -24,4 +24,22 @@
     </article>
     {% endfor %}
 </section>
+
+<section class="container visual-story-copy">
+    <article class="visual-card text">
+        <h2>Payment Methods Available</h2>
+        <p>Choose your preferred option at registration. You can accept EcoCash, cards, PayPal, mVisa, and other mobile payments.</p>
+        <ul>
+            {% for method in payment_methods %}
+            <li>
+                <strong>{{ method.name }}</strong>
+                {% if method.instructions %} - {{ method.instructions }}{% endif %}
+                {% if method.account_label or method.account_value %}
+                ({{ method.account_label|default:'Account' }}: {{ method.account_value|default:'To be configured by admin' }})
+                {% endif %}
+            </li>
+            {% endfor %}
+        </ul>
+    </article>
+</section>
 {% endblock %}

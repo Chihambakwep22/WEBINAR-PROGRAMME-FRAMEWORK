@@ -3,7 +3,7 @@ from decimal import Decimal
 from django import forms
 from django.core.exceptions import ValidationError
 
-from .models import DiscountCode, PlaybookLead, Registration, TicketTier
+from .models import DiscountCode, PaymentMethod, PlaybookLead, Registration, TicketTier
 
 
 class RegistrationForm(forms.ModelForm):
@@ -11,7 +11,12 @@ class RegistrationForm(forms.ModelForm):
 
     class Meta:
         model = Registration
-        fields = ['full_name', 'email', 'phone_number', 'ticket_tier', 'student_id_image']
+        fields = ['full_name', 'email', 'phone_number', 'ticket_tier', 'payment_method', 'student_id_image']
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['payment_method'].queryset = PaymentMethod.objects.filter(active=True)
+        self.fields['payment_method'].required = True
 
     def clean_email(self):
         email = self.cleaned_data['email'].lower().strip()
@@ -23,6 +28,7 @@ class RegistrationForm(forms.ModelForm):
         cleaned = super().clean()
         tier = cleaned.get('ticket_tier')
         code_text = cleaned.get('discount_code_text', '').strip()
+        payment_method = cleaned.get('payment_method')
 
         discount = None
         if code_text:
@@ -36,6 +42,9 @@ class RegistrationForm(forms.ModelForm):
         student_id_image = cleaned.get('student_id_image')
         if tier and tier.code == 'student' and not student_id_image:
             raise ValidationError({'student_id_image': 'Student ID image is required for the Student tier.'})
+
+        if payment_method and not payment_method.active:
+            raise ValidationError({'payment_method': 'Selected payment method is not active.'})
 
         if tier:
             final_price = Decimal(tier.price)

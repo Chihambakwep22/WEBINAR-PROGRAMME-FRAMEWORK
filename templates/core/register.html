@@ -19,6 +19,7 @@
         <label>Email Address {{ form.email }}</label>
         <label>Phone Number {{ form.phone_number }}</label>
         <label>Ticket Tier {{ form.ticket_tier }}</label>
+        <label>Payment Method {{ form.payment_method }}</label>
         <label>Discount Code (Optional) {{ form.discount_code_text }}</label>
         <label>Student ID Picture (Required for Student tier) {{ form.student_id_image }}</label>
 
@@ -34,6 +35,17 @@
         <ul>
             {% for tier in tiers %}
             <li>{{ tier.name }} - {{ currency_symbol }}{{ tier.price|convert_currency:selected_currency|floatformat:2 }}</li>
+            {% endfor %}
+        </ul>
+        <h3>Payment Methods</h3>
+        <ul>
+            {% for method in payment_methods %}
+            <li>
+                <strong>{{ method.name }}</strong>
+                {% if method.account_label or method.account_value %}
+                - {{ method.account_label|default:'Account' }}: {{ method.account_value|default:'To be added by admin' }}
+                {% endif %}
+            </li>
             {% endfor %}
         </ul>
         <p class="urgency">Early Bird spots are limited. Register now.</p>

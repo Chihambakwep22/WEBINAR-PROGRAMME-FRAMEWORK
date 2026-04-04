@@ -8,6 +8,7 @@ from .models import (
     DiscountCode,
     EmailLog,
     Offer,
+    PaymentMethod,
     PlaybookLead,
     ProgrammeSession,
     Registration,
@@ -22,15 +23,16 @@ def export_to_excel(modeladmin, request, queryset):
     wb = Workbook()
     ws = wb.active
     ws.title = 'Registrations'
-    ws.append(['Name', 'Email', 'Phone', 'Tier', 'Final Price', 'Paid', 'Attended', 'Created'])
+    ws.append(['Name', 'Email', 'Phone', 'Tier', 'Payment Method', 'Final Price', 'Paid', 'Attended', 'Created'])
 
-    for row in queryset.select_related('ticket_tier'):
+    for row in queryset.select_related('ticket_tier', 'payment_method'):
         ws.append(
             [
                 row.full_name,
                 row.email,
                 row.phone_number,
                 row.ticket_tier.name,
+                row.payment_method.name if row.payment_method else '',
                 float(row.final_price),
                 row.payment_confirmed,
                 row.attended,
@@ -52,13 +54,14 @@ class RegistrationAdmin(admin.ModelAdmin):
         'full_name',
         'email',
         'ticket_tier',
+        'payment_method',
         'final_price',
         'payment_confirmed',
         'student_id_uploaded',
         'attended',
         'created_at',
     )
-    list_filter = ('ticket_tier', 'payment_confirmed', 'attended', 'created_at')
+    list_filter = ('ticket_tier', 'payment_method', 'payment_confirmed', 'attended', 'created_at')
     search_fields = ('full_name', 'email', 'phone_number')
     readonly_fields = ('student_id_preview', 'payment_message_preview')
     actions = [export_to_excel]
@@ -77,6 +80,14 @@ class RegistrationAdmin(admin.ModelAdmin):
     def payment_message_preview(self, obj):
         message = obj.payment_message_draft()
         return format_html('<textarea rows="5" cols="90" readonly>{}</textarea>', message)
+
+
+@admin.register(PaymentMethod)
+class PaymentMethodAdmin(admin.ModelAdmin):
+    list_display = ('name', 'code', 'method_type', 'account_label', 'account_value', 'active', 'display_order')
+    list_filter = ('method_type', 'active')
+    list_editable = ('display_order', 'active')
+    search_fields = ('name', 'code', 'account_value')
 
 
 @admin.register(Speaker)
