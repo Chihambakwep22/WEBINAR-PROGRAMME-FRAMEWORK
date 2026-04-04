@@ -11,13 +11,23 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         TicketTier.objects.update_or_create(
+            code='student',
+            defaults={
+                'name': 'Student',
+                'price': 5,
+                'description': 'Student access (ID verification required).',
+                'features': 'Live webinar access\nQ&A participation\nStudent-only pricing',
+                'is_highlighted': True,
+                'active': True,
+            },
+        )
+        TicketTier.objects.update_or_create(
             code='early-bird',
             defaults={
                 'name': 'Early Bird',
                 'price': 7,
                 'description': 'Best value for early action takers.',
                 'features': 'Live webinar access\nQ&A participation',
-                'is_highlighted': True,
                 'active': True,
             },
         )
@@ -42,10 +52,18 @@ class Command(BaseCommand):
             },
         )
 
+        # Rename old record if it already exists.
+        Speaker.objects.filter(name='Quantilytix Team').update(
+            name='Dr Helper Zhou',
+            role='Quantilytix CEO',
+            bio='Helping professionals build growth systems with data-backed execution.',
+            talk_title='Personal Growth Systems that Compound',
+        )
+
         speaker1, _ = Speaker.objects.update_or_create(
             name='George Bassey',
             defaults={
-                'role': 'Founder, Impactpreneur Global',
+                'role': 'Founder, Impactpreneur Global (Speaker)',
                 'bio': 'Entrepreneurship educator helping founders scale with systems.',
                 'photo_url': 'https://images.unsplash.com/photo-1562788869-4ed32648eb72?auto=format&fit=crop&w=600&q=80',
                 'talk_title': 'Building Enterprise Discipline from Day One',
@@ -55,9 +73,9 @@ class Command(BaseCommand):
             },
         )
         speaker2, _ = Speaker.objects.update_or_create(
-            name='Quantilytix Team',
+            name='Dr Helper Zhou',
             defaults={
-                'role': 'Product and Growth Specialists',
+                'role': 'Quantilytix CEO (Speaker)',
                 'bio': 'Helping professionals build growth systems with data-backed execution.',
                 'photo_url': 'https://images.unsplash.com/photo-1531482615713-2afd69097998?auto=format&fit=crop&w=600&q=80',
                 'talk_title': 'Personal Growth Systems that Compound',
@@ -66,16 +84,41 @@ class Command(BaseCommand):
                 'display_order': 2,
             },
         )
+        speaker3, _ = Speaker.objects.update_or_create(
+            name='Amina Ncube',
+            defaults={
+                'role': 'Growth Strategist, Venture Studio (Speaker)',
+                'bio': 'Advises startups on audience growth and monetization systems.',
+                'photo_url': 'https://images.unsplash.com/photo-1487412720507-e7ab37603c6f?auto=format&fit=crop&w=600&q=80',
+                'talk_title': 'From Audience to Revenue: Offer Positioning that Converts',
+                'key_insights': 'Offer-market fit\nTrust-building campaigns\nLaunch sequencing',
+                'extra_details': 'Practical positioning frameworks for African digital businesses.',
+                'display_order': 3,
+            },
+        )
+        mc, _ = Speaker.objects.update_or_create(
+            name='Faith Ndlovu',
+            defaults={
+                'role': 'Master of Ceremonies (MC)',
+                'bio': 'MC and event facilitator focused on audience energy and flow.',
+                'photo_url': 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=600&q=80',
+                'talk_title': 'Host and Flow Management',
+                'key_insights': 'Session flow\nAudience engagement\nClosing call-to-action',
+                'extra_details': 'Leads transitions and keeps the event timing on track.',
+                'display_order': 4,
+            },
+        )
 
         dt = timezone.make_aware(datetime.fromisoformat('2026-04-22T19:00:00'))
 
         ProgrammeSession.objects.update_or_create(
-            title='Welcome and Event Kickoff',
+            title='MC Welcome and Event Kickoff',
             defaults={
-                'description': 'Context, expectations, and momentum framework.',
+                'description': 'Opening remarks, agenda, and audience warm-up.',
                 'start_time': dt,
-                'end_time': dt + timedelta(minutes=10),
+                'end_time': dt + timedelta(minutes=15),
                 'session_type': 'welcome',
+                'speaker': mc,
                 'display_order': 1,
                 'color_hex': '#d8a136',
             },
@@ -84,8 +127,8 @@ class Command(BaseCommand):
             title=speaker1.talk_title,
             defaults={
                 'description': 'Deep dive into enterprise execution discipline.',
-                'start_time': dt + timedelta(minutes=10),
-                'end_time': dt + timedelta(minutes=35),
+                'start_time': dt + timedelta(minutes=15),
+                'end_time': dt + timedelta(minutes=60),
                 'session_type': 'speaker',
                 'speaker': speaker1,
                 'display_order': 2,
@@ -96,8 +139,8 @@ class Command(BaseCommand):
             title=speaker2.talk_title,
             defaults={
                 'description': 'Systems and habits for founder growth.',
-                'start_time': dt + timedelta(minutes=35),
-                'end_time': dt + timedelta(minutes=60),
+                'start_time': dt + timedelta(minutes=60),
+                'end_time': dt + timedelta(minutes=105),
                 'session_type': 'speaker',
                 'speaker': speaker2,
                 'display_order': 3,
@@ -105,13 +148,26 @@ class Command(BaseCommand):
             },
         )
         ProgrammeSession.objects.update_or_create(
-            title='Q&A and Closing',
+            title=speaker3.talk_title,
             defaults={
-                'description': 'Audience questions and next-step actions.',
-                'start_time': dt + timedelta(minutes=60),
-                'end_time': dt + timedelta(minutes=75),
-                'session_type': 'qa',
+                'description': 'How to convert attention into predictable revenue.',
+                'start_time': dt + timedelta(minutes=105),
+                'end_time': dt + timedelta(minutes=150),
+                'session_type': 'speaker',
+                'speaker': speaker3,
                 'display_order': 4,
+                'color_hex': '#3855a6',
+            },
+        )
+        ProgrammeSession.objects.update_or_create(
+            title='Q&A + MC Closing',
+            defaults={
+                'description': 'Audience questions, final action steps, and closing remarks.',
+                'start_time': dt + timedelta(minutes=150),
+                'end_time': dt + timedelta(minutes=210),
+                'session_type': 'qa',
+                'speaker': mc,
+                'display_order': 5,
                 'color_hex': '#1f7a8c',
             },
         )

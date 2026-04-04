@@ -32,7 +32,7 @@ def global_context(request):
     return {
         'event_title': 'From Zero to Momentum: Mastering Personal Development & Entrepreneurship the African Way',
         'event_hosts': 'Quantilytix x Impactpreneur Global',
-        'event_datetime': 'April 22, 2026 | 7:00 PM GST / 8:00 PM WAT',
+        'event_datetime': 'April 22, 2026 | 7:00 PM - 10:30 PM',
         'event_start_iso': settings.EVENT_START_ISO,
         'sponsors': Sponsor.objects.filter(active=True),
         'selected_currency': selected_currency,
@@ -57,7 +57,7 @@ def home(request):
     context = {
         **global_context(request),
         'tiers': TicketTier.objects.filter(active=True),
-        'speaker_count': Speaker.objects.count(),
+        'speaker_count': Speaker.objects.filter(role__icontains='Speaker').count(),
     }
     return render(request, 'core/index.html', context)
 
@@ -65,8 +65,10 @@ def home(request):
 def speakers(request):
     speaker_images = {
         'George Bassey': static('speakers/GeorgeBassey.png'),
-        'Helper Zhou': static('speakers/HelperZhou.png'),
-        'Quantilytix Team': static('speakers/HelperZhou.png'),
+        'Dr Helper Zhou': static('speakers/HelperZhou.png'),
+        'Amina Ncube': static('images/dr.png'),
+        'Chinedu Okafor': static('images/logo.png'),
+        'Faith Ndlovu': static('images/dr.png'),
     }
     context = {
         **global_context(request),
@@ -93,7 +95,7 @@ def sponsors(request):
 
 def register(request):
     if request.method == 'POST':
-        form = RegistrationForm(request.POST)
+        form = RegistrationForm(request.POST, request.FILES)
         if form.is_valid():
             reg = form.save()
             send_registration_confirmation(reg)
@@ -115,7 +117,11 @@ def registration_success(request, registration_id):
     return render(
         request,
         'core/registration_success.html',
-        {**global_context(request), 'registration': registration},
+        {
+            **global_context(request),
+            'registration': registration,
+            'payment_message_draft': registration.payment_message_draft(),
+        },
     )
 
 

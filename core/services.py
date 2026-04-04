@@ -16,7 +16,7 @@ def send_registration_confirmation(registration: Registration) -> bool:
             'registration': registration,
             'event_name': 'From Zero to Momentum',
             'event_date': 'April 22, 2026',
-            'event_time': '7:00 PM GST / 8:00 PM WAT',
+            'event_time': '7:00 PM - 10:30 PM',
         },
     )
     send_mail(subject, message, settings.DEFAULT_FROM_EMAIL, [registration.email])

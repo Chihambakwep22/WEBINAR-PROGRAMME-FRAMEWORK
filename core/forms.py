@@ -11,7 +11,7 @@ class RegistrationForm(forms.ModelForm):
 
     class Meta:
         model = Registration
-        fields = ['full_name', 'email', 'phone_number', 'ticket_tier']
+        fields = ['full_name', 'email', 'phone_number', 'ticket_tier', 'student_id_image']
 
     def clean_email(self):
         email = self.cleaned_data['email'].lower().strip()
@@ -32,6 +32,10 @@ class RegistrationForm(forms.ModelForm):
                 raise ValidationError({'discount_code_text': 'Invalid discount code.'}) from exc
             if discount.ticket_tier and tier and discount.ticket_tier_id != tier.id:
                 raise ValidationError({'discount_code_text': 'This code is not valid for the selected tier.'})
+
+        student_id_image = cleaned.get('student_id_image')
+        if tier and tier.code == 'student' and not student_id_image:
+            raise ValidationError({'student_id_image': 'Student ID image is required for the Student tier.'})
 
         if tier:
             final_price = Decimal(tier.price)

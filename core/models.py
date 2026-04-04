@@ -61,6 +61,7 @@ class Registration(models.Model):
         blank=True,
         on_delete=models.SET_NULL,
     )
+    student_id_image = models.ImageField(upload_to='student_ids/', null=True, blank=True)
     final_price = models.DecimalField(max_digits=8, decimal_places=2)
     payment_confirmed = models.BooleanField(default=False)
     payment_reference = models.CharField(max_length=100, blank=True)
@@ -72,6 +73,17 @@ class Registration(models.Model):
 
     def __str__(self) -> str:
         return f'{self.full_name} <{self.email}>'
+
+    def payment_message_draft(self) -> str:
+        if not self.payment_confirmed:
+            return 'Payment not yet confirmed.'
+
+        return (
+            f'Hi {self.full_name}, your payment for the From Zero to Momentum webinar has been confirmed. '
+            f'Your seat is secured for April 22, 2026 from 7:00 PM to 10:30 PM. '
+            f'Ticket: {self.ticket_tier.name}. Reference: {self.payment_reference or "N/A"}. '
+            'Please keep this message for your record.'
+        )
 
 
 class ProgrammeSession(models.Model):

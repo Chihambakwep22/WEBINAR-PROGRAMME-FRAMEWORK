@@ -1,5 +1,6 @@
 from django.contrib import admin
 from django.http import HttpResponse
+from django.utils.html import format_html
 from openpyxl import Workbook
 
 from .models import (
@@ -53,12 +54,29 @@ class RegistrationAdmin(admin.ModelAdmin):
         'ticket_tier',
         'final_price',
         'payment_confirmed',
+        'student_id_uploaded',
         'attended',
         'created_at',
     )
     list_filter = ('ticket_tier', 'payment_confirmed', 'attended', 'created_at')
     search_fields = ('full_name', 'email', 'phone_number')
+    readonly_fields = ('student_id_preview', 'payment_message_preview')
     actions = [export_to_excel]
+
+    @admin.display(boolean=True, description='Student ID')
+    def student_id_uploaded(self, obj):
+        return bool(obj.student_id_image)
+
+    @admin.display(description='Student ID Preview')
+    def student_id_preview(self, obj):
+        if not obj.student_id_image:
+            return 'No student ID uploaded.'
+        return format_html('<a href="{}" target="_blank">View uploaded student ID</a>', obj.student_id_image.url)
+
+    @admin.display(description='Payment Message Draft')
+    def payment_message_preview(self, obj):
+        message = obj.payment_message_draft()
+        return format_html('<textarea rows="5" cols="90" readonly>{}</textarea>', message)
 
 
 @admin.register(Speaker)

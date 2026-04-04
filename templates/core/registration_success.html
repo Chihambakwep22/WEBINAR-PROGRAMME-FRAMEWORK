@@ -6,6 +6,14 @@
     <h1>Registration Confirmed</h1>
     <p>Thank you, {{ registration.full_name }}. Your confirmation email has been sent to {{ registration.email }}.</p>
     <p>Ticket: {{ registration.ticket_tier.name }} | Final Price: {{ currency_symbol }}{{ registration.final_price|convert_currency:selected_currency|floatformat:2 }} ({{ selected_currency }})</p>
+
+    {% if registration.payment_confirmed %}
+    <p><strong>Payment confirmed.</strong> Use this auto-generated message draft:</p>
+    <textarea rows="5" style="width:100%;max-width:900px;">{{ payment_message_draft }}</textarea>
+    {% else %}
+    <p class="muted">Payment has not been marked as confirmed yet. Once confirmed, your draft payment message appears here automatically.</p>
+    {% endif %}
+
     <div class="hero-actions">
         <a class="btn" href="{% url 'programme' %}">View Programme</a>
         <a class="btn btn-ghost" href="{% url 'offers' %}?registration={{ registration.id }}">Explore Post-Webinar Offers</a>
