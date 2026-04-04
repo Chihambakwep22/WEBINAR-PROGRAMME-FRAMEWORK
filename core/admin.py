@@ -92,15 +92,25 @@ class PaymentMethodAdmin(admin.ModelAdmin):
 
 @admin.register(Speaker)
 class SpeakerAdmin(admin.ModelAdmin):
-    list_display = ('name', 'role', 'talk_title', 'display_order')
+    list_display = ('name', 'role', 'talk_title', 'display_order', 'speaker_photo_preview')
     list_editable = ('display_order',)
     search_fields = ('name', 'role', 'talk_title')
+    readonly_fields = ('speaker_photo_preview',)
+
+    @admin.display(description='Photo Preview')
+    def speaker_photo_preview(self, obj):
+        if obj.speaker_photo:
+            return format_html('<img src="{}" style="height:80px;border-radius:8px;" />', obj.speaker_photo.url)
+        if obj.photo_url:
+            return format_html('<img src="{}" style="height:80px;border-radius:8px;" />', obj.photo_url)
+        return 'No photo'
 
 
 @admin.register(TicketTier)
 class TicketTierAdmin(admin.ModelAdmin):
     list_display = ('name', 'code', 'price', 'active', 'is_highlighted')
     list_filter = ('active', 'is_highlighted')
+    list_editable = ('price', 'active', 'is_highlighted')
 
 
 @admin.register(ProgrammeSession)

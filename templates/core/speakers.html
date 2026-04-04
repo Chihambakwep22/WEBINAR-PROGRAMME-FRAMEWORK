@@ -10,13 +10,15 @@
 <section class="container cards-grid speaker-grid">
     {% for speaker in speakers %}
     <article class="speaker-card">
-        {% with speaker_images|get_item:speaker.name as speaker_image %}
-        {% if speaker_image %}
+        {% if speaker.speaker_photo %}
         <div class="speaker-photo-frame">
-            <img class="speaker-photo" src="{{ speaker_image }}" alt="{{ speaker.name }}" />
+            <img class="speaker-photo" src="{{ speaker.speaker_photo.url }}" alt="{{ speaker.name }}" />
+        </div>
+        {% elif speaker.photo_url %}
+        <div class="speaker-photo-frame">
+            <img class="speaker-photo" src="{{ speaker.photo_url }}" alt="{{ speaker.name }}" />
         </div>
         {% endif %}
-        {% endwith %}
         <h3>{{ speaker.name }}</h3>
         <p class="muted">{{ speaker.role }}</p>
         <p>{{ speaker.bio }}</p>

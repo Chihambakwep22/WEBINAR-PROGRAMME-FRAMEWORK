@@ -7,7 +7,6 @@ from django.core.paginator import Paginator
 from django.db.models import Count
 from django.http import HttpResponse, JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
-from django.templatetags.static import static
 from django.utils import timezone
 from django.views.decorators.http import require_POST
 
@@ -64,17 +63,9 @@ def home(request):
 
 
 def speakers(request):
-    speaker_images = {
-        'George Bassey': static('speakers/GeorgeBassey.png'),
-        'Dr Helper Zhou': static('speakers/HelperZhou.png'),
-        'Amina Ncube': static('images/dr.png'),
-        'Chinedu Okafor': static('images/logo.png'),
-        'Faith Ndlovu': static('images/dr.png'),
-    }
     context = {
         **global_context(request),
         'speakers': Speaker.objects.all(),
-        'speaker_images': speaker_images,
     }
     return render(request, 'core/speakers.html', context)
 

@@ -6,6 +6,7 @@ class Speaker(models.Model):
     role = models.CharField(max_length=200)
     bio = models.TextField()
     photo_url = models.URLField(blank=True)
+    speaker_photo = models.ImageField(upload_to='speakers/', null=True, blank=True)
     talk_title = models.CharField(max_length=200)
     key_insights = models.TextField(help_text='One insight per line.')
     extra_details = models.TextField(blank=True)
